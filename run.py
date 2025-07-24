@@ -29,18 +29,19 @@ def get_sales_data():
             print("Data is valid")
             break
 
+    return sales_data
 
-def validate_data(sales_data):
+def validate_data(values):
     """
     Validate the data as being int values in each position
     """
     try:
-        for item in sales_data:
+        for item in values:
             convert_to_int=int(item)
         
-        if len(sales_data) != 6:
+        if len(values) != 6:
             raise ValueError(
-                f"Exactly 6 values must be entered, you provied {len(sales_data)}"
+                f"Exactly 6 values must be entered, you provied {len(values)}"
             )
         
     except ValueError as e:
@@ -50,9 +51,19 @@ def validate_data(sales_data):
         print("Values are valid.\n")
         return True
 
-
+def update_sales_worksheet(data):
+    """
+    Update the sales worksheet (google doc sheet). 
+    Add new row, insert list data provided
+    """
+    print("Updating sales worksheet...\n")
+    sales_worksheet= SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("Sales worksheet updated succesfully\n")
 
 data=get_sales_data()
+sales_data=[int(num) for num in data]
+update_sales_worksheet(sales_data)
 
 #split the string on ',' X
 #check length is 6 items
