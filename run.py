@@ -16,15 +16,18 @@ def get_sales_data():
     """
     Get sales figures input from the user
     """
+    while True:
+        print("Please enter sales data from the last market.")
+        print("Data should be six numbers, separated by commas.")
+        print("Example: 10,20,30,40,50,60\n")
 
-    print("Please enter sales data from the last market.")
-    print("Data should be six numbers, separated by commas.")
-    print("Example: 10,20,30,40,50,60\n")
-
-    data_str = input("Enter your data here:")
-    sales_data = data_str.split(',')
-    print(f"The data provided is {sales_data}")
-    validate_data(sales_data)
+        data_str = input("Enter your data here:")
+        sales_data = data_str.split(',')
+        #print(f"The data provided is {sales_data}")
+        
+        if validate_data(sales_data):
+            print("Data is valid")
+            break
 
 
 def validate_data(sales_data):
@@ -32,27 +35,24 @@ def validate_data(sales_data):
     Validate the data as being int values in each position
     """
     try:
-            if len(sales_data) != 6:
-                raise ValueError(
-                    f"Exactly 6 values must be entered, you provied {len(sales_data)}"
-                )
+        for item in sales_data:
+            convert_to_int=int(item)
+        
+        if len(sales_data) != 6:
+            raise ValueError(
+                f"Exactly 6 values must be entered, you provied {len(sales_data)}"
+            )
+        
     except ValueError as e:
         print(f"Invalid data: {e}, please try again\n")
-
-    for item in sales_data:
-        print(f"{type(item)}")
-        convert_to_int = 0
-        try:
-            convert_to_int=int(item)
-        except ValueError as e:
-            
-            print(f"Invalid data: {e}, please try again\n")
-        else:
-            print("Values are valid.\n")
+        return False
+    else:
+        print("Values are valid.\n")
+        return True
 
 
 
-get_sales_data()
+data=get_sales_data()
 
 #split the string on ',' X
 #check length is 6 items
