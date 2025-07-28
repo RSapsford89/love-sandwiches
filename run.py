@@ -140,21 +140,42 @@ def calculate_stock_data(data):
 
     return new_stock_data
 
+def get_stock_values(data):
+    """
+    Update user with the number of each sandwhich to create for the 
+    next day.
+
+    create a Dict with headings as keys and the no. to create as value ('cheese':3, ...)
+    """
+    #read the stock sheet
+    #get the heading
+    #get the last row of data
+
+    stock = SHEET.worksheet("stock").get_all_values()
+    headings = stock[0]
+    stock_values= dict(zip(headings,data))
+    print("Makes the following numbers of sandwiches for next market:\n")
+    return stock_values
+
 def main():
     """
     Run all program functions
     """
-    data=get_sales_data()
-    sales_data=[int(num) for num in data]
-    update_worksheet(sales_data,"sales")
-    surplus_data=calculate_surplus_data(sales_data)
-    update_worksheet(surplus_data,"surplus")
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    update_worksheet(sales_data, "sales")
+    surplus_data = calculate_surplus_data(sales_data)
+    update_worksheet(surplus_data , "surplus")
     sales_columns = get_last_5_entries_sales()
     stock_data = calculate_stock_data(sales_columns)
-    update_worksheet(stock_data,"stock")
+    update_worksheet(stock_data , "stock")
+    stock_values = get_stock_values(stock_data)
+    print(stock_values)
+
+
 print("Welcome to Love Sandwiches automation!")
 main()
-
+#get_stock_values()
 #split the string on ',' X
 #check length is 6 items
 #check items are number
