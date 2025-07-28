@@ -52,15 +52,7 @@ def validate_data(values):
         print("Values are valid.\n")
         return True
 
-def update_sales_worksheet(data):
-    """
-    Update the sales worksheet (google doc sheet). 
-    Add new row, insert list data provided
-    """
-    print("Updating sales worksheet...\n")
-    sales_worksheet= SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated succesfully\n")
+
 
 
 def calculate_surplus_data(sales_row):
@@ -85,15 +77,39 @@ def calculate_surplus_data(sales_row):
     print(f"Surplus data: {surplus_data}")
     return surplus_data
 
-def update_surplus_worksheet(surplus_list):
+# Following 2 functions have been refactored into 
+# update_worksheet and are here for reference
+# def update_sales_worksheet(data):
+#     """
+#     Update the sales worksheet (google doc sheet). 
+#     Add new row, insert list data provided
+#     """
+#     print("Updating sales worksheet...\n")
+#     sales_worksheet= SHEET.worksheet("sales")
+#     sales_worksheet.append_row(data)
+#     print("Sales worksheet updated succesfully\n")
+
+
+# def update_surplus_worksheet(surplus_list):
+#     """
+#     update the surplus sheet with 
+#     """
+#     print("Gathering surplus data...\n")
+#     surplus= SHEET.worksheet("surplus").get_all_values()
+#     print(surplus[-1])
+#     surplus.append(surplus_list)
+#     print("Surplus sheet updated with today's values.\n")
+
+def update_worksheet(data,worksheet):
     """
-    update the surplus sheet with 
+    Receives a list of integers to be inserted into a worksheet.
+    Update the releveant sheets with provided data.
     """
-    print("Gathering surplus data...\n")
-    surplus= SHEET.worksheet("surplus").get_all_values()
-    print(surplus[-1])
-    surplus.append(surplus_list)
-    print("Surplus sheet updated with today's values.\n")
+    print(f"Updating {worksheet} worksheet...\n")
+    worksheet_to_update= SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"{worksheet} worksheet updated succesfully\n")
+
 
 def main():
     """
@@ -101,9 +117,9 @@ def main():
     """
     data=get_sales_data()
     sales_data=[int(num) for num in data]
-    update_sales_worksheet(sales_data)
-    
-    update_surplus_worksheet(calculate_surplus_data(sales_data))
+    update_worksheet(sales_data,"sales")
+    surplus_sata=calculate_surplus_data(sales_data)
+    update_worksheet(surplus_sata,"surplus")
 
 print("Welcome to Love Sandwiches automation!")
 main()
