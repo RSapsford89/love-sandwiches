@@ -110,6 +110,20 @@ def update_worksheet(data,worksheet):
     worksheet_to_update.append_row(data)
     print(f"{worksheet} worksheet updated succesfully\n")
 
+def get_last_5_entries_sales():
+    """
+    Get the last 5 entries from Sales sheet for all sandwhiches
+    as a list of lists [] []
+    Create an average of the 5 entries and round to a whole
+    number and increase value by 10% to drive sales harder
+    """
+    columns = []
+    for ind in range(1,7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    return columns
+
+
 
 def main():
     """
@@ -122,7 +136,9 @@ def main():
     update_worksheet(surplus_sata,"surplus")
 
 print("Welcome to Love Sandwiches automation!")
-main()
+# main()
+sales_columns = get_last_5_entries_sales()
+
 #split the string on ',' X
 #check length is 6 items
 #check items are number
