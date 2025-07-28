@@ -114,16 +114,31 @@ def get_last_5_entries_sales():
     """
     Get the last 5 entries from Sales sheet for all sandwhiches
     as a list of lists [] []
-    Create an average of the 5 entries and round to a whole
-    number and increase value by 10% to drive sales harder
     """
+    sales = SHEET.worksheet("sales")
+
     columns = []
     for ind in range(1,7):
         column = sales.col_values(ind)
         columns.append(column[-5:])
     return columns
 
+def calculate_stock_data(data):
+    """
+    Create an average of the 5 entries and round to a whole
+    number and increase value by 10% to drive sales harder
+    """
+    print(("calculating stock data...\n"))
+    new_stock_data = []
 
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        #sum(int_column)/5 also works when you know the length will never vary
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num))
+
+    return new_stock_data
 
 def main():
     """
@@ -132,12 +147,13 @@ def main():
     data=get_sales_data()
     sales_data=[int(num) for num in data]
     update_worksheet(sales_data,"sales")
-    surplus_sata=calculate_surplus_data(sales_data)
-    update_worksheet(surplus_sata,"surplus")
-
+    surplus_data=calculate_surplus_data(sales_data)
+    update_worksheet(surplus_data,"surplus")
+    sales_columns = get_last_5_entries_sales()
+    stock_data = calculate_stock_data(sales_columns)
+    update_worksheet(stock_data,"stock")
 print("Welcome to Love Sandwiches automation!")
-# main()
-sales_columns = get_last_5_entries_sales()
+main()
 
 #split the string on ',' X
 #check length is 6 items
