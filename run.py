@@ -74,16 +74,26 @@ def calculate_surplus_data(sales_row):
     print("Calculating surplus...")
     stock = SHEET.worksheet("stock").get_all_values()
     #pprint(stock)
-    stock_row=stock[-1]
+    stock_row = stock[-1]
     print(f"Sales row: {sales_row}")
     print(f"Stock row: {stock_row}")
 
-    surplus_data=[]
-    for stock, sales in zip(stock_row,sales_row):
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
         surplus = int(stock) - sales
         surplus_data.append(surplus)
-    print(surplus_data)
+    print(f"Surplus data: {surplus_data}")
+    return surplus_data
 
+def update_surplus_worksheet(surplus_list):
+    """
+    update the surplus sheet with 
+    """
+    print("Gathering surplus data...\n")
+    surplus= SHEET.worksheet("surplus").get_all_values()
+    print(surplus[-1])
+    surplus.append(surplus_list)
+    print("Surplus sheet updated with today's values.\n")
 
 def main():
     """
@@ -92,11 +102,12 @@ def main():
     data=get_sales_data()
     sales_data=[int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    
+    update_surplus_worksheet(calculate_surplus_data(sales_data))
 
 print("Welcome to Love Sandwiches automation!")
 main()
 #split the string on ',' X
 #check length is 6 items
 #check items are number
-#stock - sales = surplus can be _ve or -ve
+#stock - sales = surplus can be +ve or -ve
